@@ -1,5 +1,20 @@
 'use strict';
 
+# Huggingface Transformersのインストール
+!pip install transformers==4.4.2
+
+# Sentencepieceのインストール
+!pip install sentencepiece==0.1.91
+
+# トークナイザーとモデルの準備
+tokenizer = T5Tokenizer.from_pretrained("rinna/japanese-gpt2-medium")
+model = AutoModelForCausalLM.from_pretrained("rinna/japanese-gpt2-medium")
+
+# 推論
+input = tokenizer.encode("昔々あるところに", return_tensors="pt")
+output = model.generate(input, do_sample=True, max_length=140, num_return_sequences=1)
+
+
 const express = require('express');
 const line = require('@line/bot-sdk');
 const PORT = process.env.PORT || 3000;
@@ -36,7 +51,7 @@ async function handleEvent(event) {
 
   return client.replyMessage(event.replyToken, {
     type: 'text',
-    text: 'a' //実際に返信の言葉を入れる箇所
+    text: tokenizer.batch_decode(output) //実際に返信の言葉を入れる箇所
   });
 }
 
