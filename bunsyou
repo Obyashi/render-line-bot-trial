@@ -1,3 +1,9 @@
+# Huggingface Transformersのインストール
+!pip install transformers==4.4.2
+
+# Sentencepieceのインストール
+!pip install sentencepiece==0.1.91
+
 # トークナイザーとモデルの準備
 tokenizer = T5Tokenizer.from_pretrained("rinna/japanese-gpt2-medium")
 model = AutoModelForCausalLM.from_pretrained("rinna/japanese-gpt2-medium")
