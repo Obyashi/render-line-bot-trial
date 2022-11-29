@@ -31,7 +31,7 @@ const client = new line.Client(config);
 
 var {PythonShell} = require('python-shell');
 
-const restext = function(resmessage) =>{
+const restext = (resmessage) =>{
     var pyshell = new PythonShell('sample.py');
     pyshell.send(resmessage);
     
