@@ -29,6 +29,18 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 
 const client = new line.Client(config);
 
+var {PythonShell} = require('python-shell');
+
+const restext = function(resmessage) =>{
+    var pyshell = new PythonShell('sample.py');
+    pyshell.send(resmessage);
+    
+    pyshell.on('message',function(data){
+        console.log(data);
+        return data;
+    });
+}
+
 async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null);
@@ -36,7 +48,7 @@ async function handleEvent(event) {
 
   return client.replyMessage(event.replyToken, {
     type: 'text',
-    text: 'a' //実際に返信の言葉を入れる箇所
+    text: resText(event.message.text) //実際に返信の言葉を入れる箇所
   });
 }
 
