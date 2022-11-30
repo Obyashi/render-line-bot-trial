@@ -29,17 +29,15 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 
 const client = new line.Client(config);
 
-var {PythonShell} = require('python-shell');
+var sock = new WebSocket('ws://127.0.0.1:5001');
 
-const restext = (resmessage) =>{
-    var pyshell = new PythonShell('sample.py');
-    pyshell.send(resmessage);
-    
-    pyshell.on('message',function(data){
-        console.log(data);
-        return data;
-    });
-}
+        sock.addEventListener('open',function(e){
+            sock.send('hello from client');
+        });
+
+        sock.addEventListener('message',function(e){
+            debug.textContent = e.data;
+        });
 
 async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
@@ -48,7 +46,7 @@ async function handleEvent(event) {
 
   return client.replyMessage(event.replyToken, {
     type: 'text',
-    text: resText(event.message.text) //実際に返信の言葉を入れる箇所
+    text: debug.textContent //実際に返信の言葉を入れる箇所
   });
 }
 
